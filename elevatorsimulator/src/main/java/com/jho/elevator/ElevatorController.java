@@ -24,7 +24,7 @@ public class ElevatorController {
         //For now we will assume all elevators are starting at first floor in online state
         elevators = new ArrayList<Elevator>();
         for (int i = 0; i < count; i++) {
-            elevators.add(new Elevator(1, true));
+            elevators.add(new Elevator(i, 1, true));
         }
     }
 
@@ -34,9 +34,23 @@ public class ElevatorController {
      * @return if an elevator is able to pickup request
      */
     //TODO: Complete this method
-    public boolean requestElevator(int direction, int floor) {
+    public int requestElevator(int direction, int floor) {
+        Elevator closestElevator;
 
-        return true;
+        //First just find the closest elevator, we will include moving ones later
+        //First see if any exist on the requesting floor
+        closestElevator = elevators.get(0);
+        int closestElevatorDistance = Math.abs(floor - closestElevator.getCurrentFloor());
+
+        for (Elevator e : elevators) {
+            if (Math.abs(e.getCurrentFloor() - floor) < closestElevatorDistance) {
+                closestElevator = e;
+            }
+            closestElevator = e;
+        }
+
+        System.out.println(String.format("Found closest available elevator [%d]", closestElevator.getElevatorId()));
+        return closestElevator.getElevatorId();
     }
 
     /**
@@ -45,22 +59,33 @@ public class ElevatorController {
      * @param floor - the floor the elevator should move to
      * @return
      */
-    //TODO: Comlete this method
     public boolean moveElevator(int id, int floor) {
+        if (id > elevators.size() - 1) {
+            System.out.println("Unable to move elevator, invalid elevator requested");
+            return false;
+        }
+
+        if (floor > MAX_FLOOR) {
+            System.out.println("Unable to move elevator, invalid floor requested");
+            return false;
+        }
+
+        elevators.get(id).moveElevator(floor);
+
         return true;
     }
 
     /**
      * Prints out the current list of elevators and where they are at, including online/offline
      */
-    //TODO: Complete this method
     public void showElevatorState() {
         if (elevators == null) {
             //Throw exception here
             System.out.println("Elevator list is empty, cannot print list");
         }
         for (Elevator e : elevators) {
-
+            System.out.println(String.format("Elevator id: [%d] : Current Floor: [%d] : Online [%s] : Moving [%s]",
+                    e.getElevatorId(), e.getCurrentFloor(), e.isOnline(), e.isMoving()));
         }
     }
 
@@ -73,6 +98,7 @@ public class ElevatorController {
     public Elevator serviceElevator(Elevator elevator) {
         elevator.setFloorsTraveled(0);
         elevator.setOnline(true);
+        elevator.setDoorState(0);
         return elevator;
     }
 

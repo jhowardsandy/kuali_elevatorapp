@@ -8,6 +8,8 @@ public class Elevator {
     private boolean moving;
     private int movingDirection;
 
+    private int doorState = 0;
+
     private int currentFloor;
     private int destinationFloor;
 
@@ -17,7 +19,11 @@ public class Elevator {
 
     private int tripsMade;
 
-    public Elevator(int startingFloor, boolean state) {
+    private static final int DOOR_STATE_CLOSED = 0;
+    private static final int DOOR_STATE_OPEN = 1;
+
+    public Elevator(int elevatorId, int startingFloor, boolean state) {
+        this.elevatorId = elevatorId;
         this.currentFloor = startingFloor;
         this.online = state;
         this.moving = false;
@@ -28,12 +34,62 @@ public class Elevator {
         this.tripsMade = 0;
     }
 
+    public void moveElevator(int floor) {
+        closeDoor();
+        setMoving(true);
+        if (currentFloor == floor) {
+            System.out.println("Elevator [%d] is already at it's destination");
+            return;
+        }
+
+        tripsMade++;
+
+        if (currentFloor > floor) {
+            while (currentFloor != floor) {
+                System.out.println(String.format("Elevator [%d] moving from floor [%d] to [%d]", elevatorId, currentFloor, currentFloor -1 ));
+                floorsTraveled++;
+                currentFloor--;
+            }
+        }
+
+        if (currentFloor < floor) {
+            while (currentFloor != floor) {
+                System.out.println(String.format("Elevator [%d] moving from floor [%d] to [%d]", elevatorId, currentFloor, currentFloor + 1 ));
+                floorsTraveled++;
+                currentFloor++;
+            }
+        }
+
+        System.out.println(String.format("Elevator [%d] has arrivated at destniation floor [%d]", elevatorId, currentFloor));
+
+        setMoving(false);
+        openDoor();
+    }
+
+    public void openDoor() {
+        System.out.println(String.format("Elevator [%d] door opening", elevatorId));
+        setDoorState(DOOR_STATE_OPEN);
+    }
+
+    public void closeDoor() {
+        System.out.println(String.format("Elevator [%d] door closing", elevatorId));
+        setDoorState(DOOR_STATE_CLOSED);
+    }
+
     public int getElevatorId() {
         return elevatorId;
     }
 
     public void setElevatorId(int elevatorId) {
         this.elevatorId = elevatorId;
+    }
+
+    public int getDoorState() {
+        return doorState;
+    }
+
+    public void setDoorState(int doorState) {
+        this.doorState = doorState;
     }
 
     public boolean isOnline() {
