@@ -31,6 +31,11 @@ public class ElevatorSimulator {
         controller.requestElevator(1, 3);
         controller.requestElevator(1, 75);
 
+        //Show that the closest elevator will pickup the passengers and then
+        //transport them to the appropriate floor
+        //Also showed that elevator that just dropped off passengers can pick up next set if closest.
+        controller.transportPassengers(5, 88);
+
         controller.showElevatorState();
 
     }

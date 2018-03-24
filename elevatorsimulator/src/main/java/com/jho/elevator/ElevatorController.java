@@ -35,6 +35,8 @@ public class ElevatorController {
      */
     //TODO: Complete this method
     public int requestElevator(int direction, int floor) {
+
+        //TODO: Implement direction checking. Currently doesn't care which direction the user cares to go
         Elevator closestElevator;
 
         //First just find the closest elevator, we will include moving ones later
@@ -69,14 +71,23 @@ public class ElevatorController {
             }
         }
 
-        //TODO: I would check if an elevator is online and moving and closer than the others
-
         System.out.println(String.format("Found closest available elevator [%d]", closestElevator.getElevatorId()));
 
         //Now move the closest available elevator to the requested floor
         moveElevator(closestElevator.getElevatorId(), floor);
-
         return closestElevator.getElevatorId();
+    }
+
+    //This will move the closes elevator to the current floor and transport to destination floor
+    public void transportPassengers(int currentFloor, int destinationFloor) {
+        elevators.get(requestElevator(0, currentFloor)).moveElevator(destinationFloor);
+    }
+
+    public void transportPassengers(int currentFloor, int[] floors) {
+        //TODO: Complete this method
+
+        //As an elevator can have passengers that need to go to multiple floors, we should correctly stop and drop off at
+        //each of these floors on our way
     }
 
     /**
