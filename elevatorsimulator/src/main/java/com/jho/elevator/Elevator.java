@@ -6,6 +6,7 @@ public class Elevator {
 
     private boolean online;
     private boolean moving;
+    private int movingDirection;
 
     private int currentFloor;
     private int destinationFloor;
@@ -15,6 +16,17 @@ public class Elevator {
     private int allFloorsTraveled;
 
     private int tripsMade;
+
+    public Elevator(int startingFloor, boolean state) {
+        this.currentFloor = startingFloor;
+        this.online = state;
+        this.moving = false;
+        this.movingDirection = 0;
+        this.destinationFloor = 0;
+        this.floorsTraveled = 0;
+        this.allFloorsTraveled = 0;
+        this.tripsMade = 0;
+    }
 
     public int getElevatorId() {
         return elevatorId;
@@ -78,5 +90,13 @@ public class Elevator {
 
     public void setTripsMade(int tripsMade) {
         this.tripsMade = tripsMade;
+    }
+
+    public int getMovingDirection() {
+        return movingDirection;
+    }
+
+    public void setMovingDirection(int movingDirection) {
+        this.movingDirection = movingDirection;
     }
 }
