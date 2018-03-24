@@ -19,6 +19,10 @@ public class Elevator {
 
     private int tripsMade;
 
+    public static final int MOVING_DIRECTION_NONE = 0;
+    public static final int MOVING_DIRECTION_DOWN = 1;
+    public static final int MOVING_DIRECTION_UP = 2;
+
     private static final int DOOR_STATE_CLOSED = 0;
     private static final int DOOR_STATE_OPEN = 1;
 
@@ -35,16 +39,24 @@ public class Elevator {
     }
 
     public void moveElevator(int floor) {
-        closeDoor();
-        setMoving(true);
+
+        if (!online) {
+            System.out.println(String.format("Elevator [%d] is not online, cannot move", elevatorId));
+            return;
+        }
+
         if (currentFloor == floor) {
             System.out.println("Elevator [%d] is already at it's destination");
             return;
         }
 
+        closeDoor();
+        setMoving(true);
+
         tripsMade++;
 
         if (currentFloor > floor) {
+            setMovingDirection(MOVING_DIRECTION_DOWN);
             while (currentFloor != floor) {
                 System.out.println(String.format("Elevator [%d] moving from floor [%d] to [%d]", elevatorId, currentFloor, currentFloor -1 ));
                 floorsTraveled++;
@@ -53,6 +65,7 @@ public class Elevator {
         }
 
         if (currentFloor < floor) {
+            setMovingDirection(MOVING_DIRECTION_UP);
             while (currentFloor != floor) {
                 System.out.println(String.format("Elevator [%d] moving from floor [%d] to [%d]", elevatorId, currentFloor, currentFloor + 1 ));
                 floorsTraveled++;
@@ -63,7 +76,13 @@ public class Elevator {
         System.out.println(String.format("Elevator [%d] has arrivated at destniation floor [%d]", elevatorId, currentFloor));
 
         setMoving(false);
+        setMovingDirection(MOVING_DIRECTION_NONE);
         openDoor();
+
+        if (tripsMade >= 100) {
+            setOnline(false);
+        }
+
     }
 
     public void openDoor() {

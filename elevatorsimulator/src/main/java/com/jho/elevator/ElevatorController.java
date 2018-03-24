@@ -43,13 +43,39 @@ public class ElevatorController {
         int closestElevatorDistance = Math.abs(floor - closestElevator.getCurrentFloor());
 
         for (Elevator e : elevators) {
-            if (Math.abs(e.getCurrentFloor() - floor) < closestElevatorDistance) {
-                closestElevator = e;
+            if (e.isOnline()) {
+                if (e.isMoving()) {
+                    if (e.getCurrentFloor() > floor) {
+                        if (e.getMovingDirection() == 1) {
+                            //Elevator is moving towards, check
+                            if (Math.abs(e.getCurrentFloor() - floor) < closestElevatorDistance) {
+                                closestElevator = e;
+                            }
+                        }
+                    } else {
+                        if (e.getMovingDirection() == 2) {
+                            if (Math.abs(e.getCurrentFloor() - floor) < closestElevatorDistance) {
+                                closestElevator = e;
+                            }
+                        }
+                    }
+                }
+                //elevator is not moving, check current floor
+                else {
+                    if (Math.abs(e.getCurrentFloor() - floor) < closestElevatorDistance) {
+                        closestElevator = e;
+                    }
+                }
             }
-            closestElevator = e;
         }
 
+        //TODO: I would check if an elevator is online and moving and closer than the others
+
         System.out.println(String.format("Found closest available elevator [%d]", closestElevator.getElevatorId()));
+
+        //Now move the closest available elevator to the requested floor
+        moveElevator(closestElevator.getElevatorId(), floor);
+
         return closestElevator.getElevatorId();
     }
 
@@ -84,8 +110,9 @@ public class ElevatorController {
             System.out.println("Elevator list is empty, cannot print list");
         }
         for (Elevator e : elevators) {
-            System.out.println(String.format("Elevator id: [%d] : Current Floor: [%d] : Online [%s] : Moving [%s]",
-                    e.getElevatorId(), e.getCurrentFloor(), e.isOnline(), e.isMoving()));
+            System.out.println(String.format("Elevator id: [%d] : Current Floor: [%d] : Online [%s] : Moving [%s] : " +
+                            "Trips Made [%d] : Floors Traveled [%d]",
+                    e.getElevatorId(), e.getCurrentFloor(), e.isOnline(), e.isMoving(), e.getTripsMade(), e.getFloorsTraveled()));
         }
     }
 
