@@ -137,9 +137,13 @@ public class ElevatorController {
         elevator.setFloorsTraveled(0);
         elevator.setOnline(true);
         elevator.setDoorState(0);
+        elevator.setTripsMade(0);
         return elevator;
     }
 
+    public List<Elevator> getElevators() {
+        return elevators;
+    }
 
 
 }

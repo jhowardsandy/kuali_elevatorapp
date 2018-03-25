@@ -14,8 +14,11 @@ public class Elevator {
     private int destinationFloor;
 
     private int floorsTraveled;
+
     //This is a number showing ALL floors traveled
+    //These two values are like an odometer and should not be erased
     private int allFloorsTraveled;
+    private int allTripsMade;
 
     private int tripsMade;
 
@@ -46,7 +49,7 @@ public class Elevator {
         }
 
         if (currentFloor == floor) {
-            System.out.println("Elevator [%d] is already at it's destination");
+            System.out.println(String.format("Elevator [%d] is already at it's destination", elevatorId));
             return;
         }
 
@@ -157,6 +160,14 @@ public class Elevator {
 
     public void setAllFloorsTraveled(int allFloorsTraveled) {
         this.allFloorsTraveled = allFloorsTraveled;
+    }
+
+    public int getAllTripsMade() {
+        return allTripsMade;
+    }
+
+    public void setAllTripsMade(int allTripsMade) {
+        this.allTripsMade = allTripsMade;
     }
 
     public int getTripsMade() {
