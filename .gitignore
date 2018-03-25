@@ -1,5 +1,7 @@
 build/
 out/
 idea/
-.gradle/
+elevatorsimulator/.gradle/
 gradle/
+**/gradle/
+**/.gradle/
