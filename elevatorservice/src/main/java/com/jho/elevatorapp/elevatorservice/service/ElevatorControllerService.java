@@ -1,6 +1,6 @@
-package com.jho.elevatorapp.service;
+package com.jho.elevatorapp.elevatorservice.service;
 
-import com.jho.elevatorapp.model.Elevator;
+import com.jho.elevatorapp.elevatorservice.model.Elevator;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +16,10 @@ public class ElevatorControllerService {
     int DIRECTION_UP = 1;
 
     private List<Elevator> elevators;
+
+    public ElevatorControllerService() {
+        initializeElevators(5, 25);
+    }
 
     public ElevatorControllerService(int count, int floors) {
         initializeElevators(count, floors);

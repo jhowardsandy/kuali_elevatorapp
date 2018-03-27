@@ -1,4 +1,4 @@
-package com.jho.elevatorapp.model;
+package com.jho.elevatorapp.elevatorservice.model;
 
 public class Elevator {
 
