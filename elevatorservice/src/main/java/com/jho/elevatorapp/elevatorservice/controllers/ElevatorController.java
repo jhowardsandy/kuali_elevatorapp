@@ -27,6 +27,14 @@ public class ElevatorController {
         return String.format("Initialized a new Elevator Service with a floor count: [%d] and an elevator count: [%d]", floors, elevators);
     }
 
+    @RequestMapping("/transportPassengers")
+    public String transportPassengers(@RequestParam int currentFloor,
+                                      @RequestParam int destinationFloor) {
+        System.out.println(String.format("Elevator [%d] requested to move passengers to floor [%d]", currentFloor, destinationFloor));
+        elevatorService.transportPassengers(currentFloor, destinationFloor);
+        return String.format("Elevator [%d] requested to move passengers to floor [%d]", currentFloor, destinationFloor);
+    }
+
     @RequestMapping("/moveElevator")
     public String moveElevator(@RequestParam String elevatorId,
                                @RequestParam String floor) {
@@ -51,6 +59,25 @@ public class ElevatorController {
         return String.format("Floor [%d] requested an elevator to go in the direction [%d]", requestFloor, requestDirection);
     }
 
+    @RequestMapping("/showElevatorState")
+    public void showElevatorState() {
+        elevatorService.showElevatorState();
+    }
+
+    @RequestMapping("/serviceElevator")
+    public String serviceElevator(@RequestParam int id) {
+        System.out.println(String.format("Servicing elevator with id: [%d]", id));
+
+        try {
+            elevatorService.serviceElevator(elevatorService.getElevators().get(id));
+        } catch (ArrayIndexOutOfBoundsException ae) {
+            System.err.print(String.format("Unable to service elevator with id [%d], said elevator does not exist"));
+            System.err.println(ae.getLocalizedMessage());
+        }
+
+        return String.format("Completed servicing of elevator with id [%d]", id);
+    }
+
     @RequestMapping(value = "/getElevator")
     Elevator getElevator(@RequestParam int id){
         System.out.println("Getting elevator with ID: "+ id);
@@ -61,6 +88,13 @@ public class ElevatorController {
     List<Elevator> getElevators(){
         System.out.println("Getting elevators");
         return elevatorService.getElevators();
+    }
+
+    @RequestMapping(value = "/elevatorServiceTest")
+    Elevator getElevator(@RequestParam String id){
+        int identifier = Integer.parseInt(id);
+        System.out.println("Getting elevator with ID: "+ id);
+        return elevatorService.getElevators().get(identifier);
     }
 
 }

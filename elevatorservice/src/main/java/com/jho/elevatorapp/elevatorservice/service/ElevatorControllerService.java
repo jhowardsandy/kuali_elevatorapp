@@ -87,7 +87,7 @@ public class ElevatorControllerService {
     }
 
     //This will move the closes elevator to the current floor and transport to destination floor
-    public void transportPassengers(int currentFloor, int destinationFloor) {
+    public synchronized void transportPassengers(int currentFloor, int destinationFloor) {
         elevators.get(requestElevator(0, currentFloor)).moveElevator(destinationFloor);
     }
 

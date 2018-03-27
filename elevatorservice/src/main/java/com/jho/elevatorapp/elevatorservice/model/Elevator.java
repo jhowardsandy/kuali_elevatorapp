@@ -41,7 +41,7 @@ public class Elevator {
         this.tripsMade = 0;
     }
 
-    public void moveElevator(int floor) {
+    public synchronized void moveElevator(int floor) {
 
         if (!online) {
             System.out.println(String.format("Elevator [%d] is not online, cannot move", elevatorId));
@@ -62,6 +62,11 @@ public class Elevator {
             setMovingDirection(MOVING_DIRECTION_DOWN);
             while (currentFloor != floor) {
                 System.out.println(String.format("Elevator [%d] moving from floor [%d] to [%d]", elevatorId, currentFloor, currentFloor -1 ));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 floorsTraveled++;
                 currentFloor--;
             }
@@ -71,12 +76,17 @@ public class Elevator {
             setMovingDirection(MOVING_DIRECTION_UP);
             while (currentFloor != floor) {
                 System.out.println(String.format("Elevator [%d] moving from floor [%d] to [%d]", elevatorId, currentFloor, currentFloor + 1 ));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 floorsTraveled++;
                 currentFloor++;
             }
         }
 
-        System.out.println(String.format("Elevator [%d] has arrivated at destniation floor [%d]", elevatorId, currentFloor));
+        System.out.println(String.format("Elevator [%d] has arrived at destination floor [%d]", elevatorId, currentFloor));
 
         setMoving(false);
         setMovingDirection(MOVING_DIRECTION_NONE);
